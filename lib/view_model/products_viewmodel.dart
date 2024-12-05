@@ -11,7 +11,7 @@ class ProductProvider with ChangeNotifier {
 
   final Set<Product> _productsSet = {};
   List<Product> products = [];
-
+  String? errorMessage;
   int currentPage = 1;
   bool isLoading = false;
   bool hasMore = true;
@@ -20,6 +20,7 @@ class ProductProvider with ChangeNotifier {
     if (isLoading || !hasMore) return;
 
     isLoading = true;
+    errorMessage=null;
     notifyListeners();
 
     try {
@@ -34,7 +35,8 @@ class ProductProvider with ChangeNotifier {
         currentPage++;
       }
     } catch (e) {
-      print("Error loading data: $e");
+      errorMessage=
+      "Error loading data: ${e.toString()}";
     } finally {
       isLoading = false;
       notifyListeners();
@@ -45,7 +47,8 @@ class ProductProvider with ChangeNotifier {
     try {
       return await _apiService.getProductDetail(productId);
     } catch (e) {
-      print("Error fetching product details: $e");
+        errorMessage=
+      "Error loading product details data: ${e.toString()}";
       return null;
     }
   }

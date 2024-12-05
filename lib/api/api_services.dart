@@ -23,11 +23,15 @@ class ApiService {
   }
 
   Future<Product> getProductDetail(int id) async {
-    final response = await http.get(Uri.parse('$baseUrl/$id'));
-    if (response.statusCode == 200) {
-      return Product.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to Get product detail');
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/$id'));
+      if (response.statusCode == 200) {
+        return Product.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to Get product detail');
+      }
+    } catch (e) {
+      throw Exception("Failed to get product details $e");
     }
   }
 }

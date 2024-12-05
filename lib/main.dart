@@ -16,10 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
-          
-           fontFamily: 'Nunito Sans'),
-      home: ProductListPage(),
+          scaffoldBackgroundColor: Colors.white, fontFamily: 'Nunito Sans'),
+      home: const ProductListPage(),
     );
   }
 }

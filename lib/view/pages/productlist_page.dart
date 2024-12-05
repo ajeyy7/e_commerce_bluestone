@@ -29,142 +29,182 @@ class ProductListPage extends StatelessWidget {
           ),
         ],
       ),
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollInfo) {
-          if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
-              productProvider.hasMore &&
-              !productProvider.isLoading) {
-            productProvider.getProducts();
-          }
-          return false;
-        },
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
-              child: Row(
-                children: [
-                  Flexible(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Search for products...',
-                        prefixIcon: const Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Container(
-                    height: 55,
-                    width: 40,
-                    decoration: BoxDecoration(
-                        color: primary, borderRadius: BorderRadius.circular(8)),
-                    child: const Icon(
-                      Icons.search,
-                      color: Colors.white,
-                    ),
-                  )
-                ],
+      body: productProvider.isLoading && productProvider.products.isEmpty
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: primary,
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: productProvider.products.length +
-                    (productProvider.hasMore ? 1 : 0),
-                itemBuilder: (context, index) {
-                  if (index == productProvider.products.length) {
-                    return const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                          child: CircularProgressIndicator(
-                        color: Colors.white,
-                      )),
-                    );
-                  }
-
-                  final product = productProvider.products[index];
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetailsPage(
-                            productId: product.id,
+            )
+          : productProvider.errorMessage != null
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(productProvider.errorMessage!,
+                          style:
+                              const TextStyle(color: Colors.red, fontSize: 16)),
+                      InkWell(
+                        onTap: () {
+                          productProvider.getProducts();
+                        },
+                        child: Container(
+                          height: 55,
+                          width: 80,
+                          decoration: BoxDecoration(
+                              color: primary,
+                              borderRadius: BorderRadius.circular(8)),
+                          child: const Icon(
+                            Icons.loop_rounded,
+                            color: Colors.white,
                           ),
                         ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 180,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: const [
-                              BoxShadow(
-                                  blurRadius: 2,
-                                  color: Colors.grey,
-                                  spreadRadius: 0.4)
-                            ]),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Image.network(product.image,
-                                  width: 150, height: 150, fit: BoxFit.contain),
-                              const SizedBox(width: 20),
-                              Flexible(
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          child: Text(product.title,
-                                              style: const TextStyle(
-                                                  fontSize: 15)),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '\$${product.price.toStringAsFixed(2)}',
-                                          style: const TextStyle(
-                                              color: primary, fontSize: 15),
-                                        ),
-                                        Text(
-                                            ' ${product.rating.count} Orders & Rating: ${product.rating.rate}',
-                                            style:
-                                                const TextStyle(fontSize: 12)),
-                                      ],
-                                    ),
-                                  ],
+                      ),
+                    ],
+                  ),
+                )
+              : NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification scrollInfo) {
+                    if (scrollInfo.metrics.pixels ==
+                            scrollInfo.metrics.maxScrollExtent &&
+                        productProvider.hasMore &&
+                        !productProvider.isLoading) {
+                      productProvider.getProducts();
+                    }
+                    return false;
+                  },
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 8),
+                        child: Row(
+                          children: [
+                            Flexible(
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Search for products...',
+                                  prefixIcon: const Icon(Icons.search),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              height: 55,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                  color: primary,
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: const Icon(
+                                Icons.search,
+                                color: Colors.white,
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: productProvider.products.length +
+                              (productProvider.hasMore ? 1 : 0),
+                          itemBuilder: (context, index) {
+                            if (index == productProvider.products.length) {
+                              return const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Center(
+                                    child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                )),
+                              );
+                            }
+
+                            final product = productProvider.products[index];
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductDetailsPage(
+                                      productId: product.id,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  height: 180,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                            blurRadius: 2,
+                                            color: Colors.grey,
+                                            spreadRadius: 0.4)
+                                      ]),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Image.network(product.image,
+                                            width: 150,
+                                            height: 150,
+                                            fit: BoxFit.contain),
+                                        const SizedBox(width: 20),
+                                        Flexible(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(
+                                                    child: Text(product.title,
+                                                        style: const TextStyle(
+                                                            fontSize: 15)),
+                                                  ),
+                                                ],
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    '\$${product.price.toStringAsFixed(2)}',
+                                                    style: const TextStyle(
+                                                        color: primary,
+                                                        fontSize: 15),
+                                                  ),
+                                                  Text(
+                                                      ' ${product.rating.count} Orders & Rating: ${product.rating.rate}',
+                                                      style: const TextStyle(
+                                                          fontSize: 12)),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
     );
   }
 }

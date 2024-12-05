@@ -33,9 +33,33 @@ class ProductDetailsPage extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
+            } else if (snapshot.hasError ||
+                productProvider.errorMessage != null) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    productProvider.errorMessage ??
+                        'Failed to load product details',
+                    style: const TextStyle(color: Colors.red, fontSize: 16),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      productProvider.getProductDetails(productId);
+                    },
+                    child: Container(
+                      height: 55,
+                      width: 80,
+                      decoration: BoxDecoration(
+                          color: primary,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: const Icon(
+                        Icons.loop_rounded,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               );
             } else if (!snapshot.hasData) {
               return const Center(child: Text('No data available.'));
