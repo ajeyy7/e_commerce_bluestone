@@ -13,6 +13,7 @@ class ProductListPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: const Icon(Icons.arrow_back_ios_new),
         backgroundColor: Colors.white,
         actions: [
           Padding(
@@ -21,7 +22,7 @@ class ProductListPage extends StatelessWidget {
               backgroundColor: primary,
               label: const Text('2'),
               child: IconButton(
-                icon: const Icon(Icons.shopping_cart),
+                icon: const Icon(Icons.shopping_bag_outlined),
                 onPressed: () {},
               ),
             ),
@@ -40,22 +41,34 @@ class ProductListPage extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search for products...',
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide.none,
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search for products...',
+                        prefixIcon: const Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                    ),
                   ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 0.0,
-                    horizontal: 16.0,
-                  ),
-                ),
+                  const SizedBox(width: 8),
+                  Container(
+                    height: 55,
+                    width: 40,
+                    decoration: BoxDecoration(
+                        color: primary, borderRadius: BorderRadius.circular(8)),
+                    child: const Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
               ),
             ),
             Expanded(
@@ -66,7 +79,10 @@ class ProductListPage extends StatelessWidget {
                   if (index == productProvider.products.length) {
                     return const Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: Center(child: CircularProgressIndicator()),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.white,
+                      )),
                     );
                   }
 
