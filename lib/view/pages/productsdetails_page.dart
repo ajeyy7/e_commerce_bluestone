@@ -123,13 +123,19 @@ class ProductDetailsPage extends StatelessWidget {
                               style: const TextStyle(
                                   fontSize: 22, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 8),
+                          Text(' ${product.category}',
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.grey.shade600)),
+                          const SizedBox(height: 8),
                           Text(' ${product.description}',
                               style: TextStyle(
                                   fontSize: 14, color: Colors.grey.shade600)),
                           const SizedBox(height: 8),
                           Text('\$ ${product.price.toStringAsFixed(2)}',
                               style: const TextStyle(
-                                  fontSize: 18, color: Colors.black)),
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700)),
                           const SizedBox(height: 8),
                           Container(
                             padding: const EdgeInsets.all(8.0),
@@ -143,42 +149,7 @@ class ProductDetailsPage extends StatelessWidget {
                                   fontSize: 14, color: Colors.black),
                             ),
                           ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Have a coupon code? Add here:',
-                            style: TextStyle(fontSize: 14, color: Colors.black),
-                          ),
-                          const SizedBox(height: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 4.0),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'AHGF656b',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.black),
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Available',
-                                      style: TextStyle(
-                                          color: Colors.green, fontSize: 14),
-                                    ),
-                                    Icon(Icons.check_circle,
-                                        color: Colors.green),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 40),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
